@@ -1,0 +1,98 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  email       String?  @unique
+  phone       String?  @unique
+  displayName String?
+  currency    String   @default("INR")
+  locale      String   @default("en-IN")
+
+  accounts     Account[]
+  transactions Transaction[] // ✅ now matched with Transaction.user
+  budgets      Budget[]
+  goals        Goal[]
+  adviceLogs   AdviceLog[] // ✅ added to fix AdviceLog.user
+}
+
+model Account {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  type        String
+  provider    String?
+  displayName String
+  lastSyncAt  DateTime?
+
+  transactions Transaction[]
+}
+
+model Category {
+  id       String  @id @default(cuid())
+  name     String  @unique
+  parentId String?
+
+  transactions Transaction[] // ✅ added to fix Transaction.category
+  budgets      Budget[] // ✅ added to fix Budget.category
+}
+
+model Transaction {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  accountId    String
+  account      Account   @relation(fields: [accountId], references: [id])
+  userId       String
+  user         User      @relation(fields: [userId], references: [id]) // ✅ added
+  date         DateTime
+  amount       Decimal
+  currency     String    @default("INR")
+  direction    String    @default("debit")
+  description  String?
+  merchantRaw  String?
+  merchantNorm String?
+  categoryId   String?
+  category     Category? @relation(fields: [categoryId], references: [id])
+  source       String    @default("manual")
+  meta         Json?
+}
+
+model Budget {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  month      Int
+  year       Int
+  amount     Decimal
+}
+
+model Goal {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  name         String
+  targetAmount Decimal
+  targetDate   DateTime
+  riskProfile  String   @default("moderate")
+  sipAmount    Decimal?
+  meta         Json?
+}
+
+model AdviceLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  type      String
+  content   String
+  meta      Json?
+}

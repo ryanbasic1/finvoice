@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Login - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-page">
+  
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">Sign in</div>
+    <div class="header-actions">
+      <div class="user-pill">FinVoice</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="login-container">
+      <div class="login-card">
+        <h2>Demo Login</h2>
+        <p>Only the following credentials are allowed for this demo.</p>
+        <ul style="text-align:left;margin:8px 0 0 18px"><li><strong>Username:</strong> demouser</li><li><strong>Password:</strong> 1233</li></ul>
+        <label style="display:block;text-align:left;margin-top:12px">Username: <input id="loginUser" type="text" placeholder="demouser" /></label>
+        <label style="display:block;text-align:left;margin-top:12px">Password: <input id="loginPass" type="password" placeholder="1233" /></label>
+        <div style="margin-top:14px">
+          <button id="btnDemoLogin" class="primary-btn">Sign in</button>
+        </div>
+        <p id="loginMsg" style="margin-top:10px;font-weight:600"></p>
+        <p style="margin-top:8px"><a href="index.html">Back</a></p>
+      </div>
+    </div>
+
+    <script>
+      // If already logged in, skip login page
+      try {
+        const existing = sessionStorage.getItem('demoUser');
+        if (existing) {
+          window.location.replace('dashboard.html');
+        }
+      } catch (e) {}
+
+      document.getElementById('btnDemoLogin').addEventListener('click', () => {
+        const u = (document.getElementById('loginUser').value||'').trim();
+        const p = (document.getElementById('loginPass').value||'').trim();
+        const msg = document.getElementById('loginMsg');
+        if (u === 'demouser' && p === '1233') {
+          try { sessionStorage.setItem('demoUser', JSON.stringify({ name: 'Demo User', email: 'demo@finvoice.test', ts: Date.now() })); } catch (e) {}
+          msg.style.color = 'green';
+          msg.textContent = 'Login successful. Redirecting…';
+          setTimeout(() => window.location.href = 'dashboard.html', 500);
+        } else {
+          msg.style.color = 'red';
+          msg.textContent = 'Invalid credentials.';
+        }
+      });
+    </script>
+  </main>
+</body>
+</html>

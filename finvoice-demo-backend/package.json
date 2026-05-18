@@ -1,0 +1,36 @@
+{
+  "name": "finvoice-demo-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"python hinglish_nlp_service.py\" \"npm start\"",   
+    "start": "node --env-file=.env --enable-source-maps --experimental-strip-types ./dist/src/index.js",
+    "build": "tsc -p tsconfig.json",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:studio": "prisma studio",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "chrono-node": "^2.7.6",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pdfkit": "^0.15.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "concurrently": "^9.2.0",
+    "prisma": "^6.14.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.5.4"
+  },
+  "description": "This is a minimal, working backend for the FinVoice demo using **Express + Prisma + SQLite** so you can run it locally in minutes. We will later switch to PostgreSQL and add advanced features.",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

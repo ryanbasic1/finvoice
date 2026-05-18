@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Payments - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="add-transaction.html">Transactions</a></li>
+        <li><a href="monthly-summary.html">Insights</a></li>
+        <li><a href="sip.html">Goals</a></li>
+        <li><a href="income.html">Income</a></li>
+        <li><a href="online.html" class="active">Advice</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#">Dark Mode</a>
+        <a href="#" id="sidebarLogout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">Online Payments</div>
+    <div class="header-actions">
+      <div id="demoUserDisplay" class="user-pill"><span id="demoName">Demo</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <p><a href="index.html">← Back</a></p>
+    <div id="onlineUserArea" style="margin-bottom:8px"></div>
+    <script>
+      (function(){
+        try{
+          const u = JSON.parse(sessionStorage.getItem('demoUser')||'null');
+          if (u && u.name) {
+            const div = document.getElementById('onlineUserArea');
+            if (div) div.innerHTML = `Signed in as <strong>${u.name}</strong> (<a href='#' id='logoutOnline'>Logout</a>)`;
+            const out = document.getElementById('logoutOnline');
+            if (out) out.addEventListener('click', ()=>{ sessionStorage.removeItem('demoUser'); location.reload(); });
+          }
+        }catch(e){}
+      })();
+    </script>
+
+    <!-- Market Advisory Widget -->
+    <div class="section">
+      <h2>Market Advisory</h2>
+      <div class="content-card">
+        <blockquote class="trendlyne-widgets" data-get-url="https://trendlyne.com/web-widget/ipo-widget/Poppins/?activeCol=006AFF&linksCol=006CFF&primary=202020&secondary=666666&positive=00a25b&negative=ff4e54" data-theme="light"></blockquote>
+        <script async src="https://cdn-static.trendlyne.com/static/js/webwidgets/tl-widgets.js" charset="utf-8"></script>
+        <p class="muted" style="margin-top:8px">Live IPO widget and signals are provided by Trendlyne.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Payments via UPI / Online wallets</h2>
+      <p>Shows transactions that mention common online payment apps like GPay, PhonePe, Paytm, UPI, BHIM.</p>
+      <p><button id="loadDemo" class="primary-btn">Load Demo Data</button> <span id="demoStatus" style="margin-left:8px;color:#444"></span></p>
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Description</th><th>Amount</th><th>Category</th></tr>
+        </thead>
+        <tbody id="onlineTable"></tbody>
+      </table>
+    </div>
+
+    <script>
+    // Use shared API_BASE from app.js; define local helpers that depend on it
+    const onlineKeywords = /gpay|phonepe|paytm|upi|bhim|google pay|googlepay/i;
+    async function fetchOnline() {
+      try {
+        const res = await fetch(`${API_BASE}/transactions?limit=200&offset=0`);
+        if (!res.ok) return;
+        const txns = await res.json();
+        const online = txns.filter(t => onlineKeywords.test((t.description||'') + ' ' + (t.merchant||'')));
+        const tbody = document.getElementById('onlineTable');
+        if (!online.length) { tbody.innerHTML = '<tr><td colspan="4">No online payments found</td></tr>'; return; }
+        tbody.innerHTML = '';
+        online.forEach(t => {
+          const amt = Number(t.amount);
+          const cat = t.category ? t.category.name : (amt<0? 'Income' : 'Uncategorized');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${new Date(t.date).toISOString().slice(0,10)}</td><td>${t.description||''}</td><td>₹${Math.abs(amt).toFixed(2)}</td><td>${cat}</td>`;
+          tbody.appendChild(tr);
+        });
+      } catch (e) { console.warn('fetchOnline failed', e); }
+    }
+    async function createDemoData() {
+      const btn = document.getElementById('loadDemo');
+      const status = document.getElementById('demoStatus');
+      const samples = [
+        'Paid GPay to Aman ₹250 for dinner',
+        'PhonePe transfer to Grocery Store ₹1200',
+        'Paytm payment to Electric Bill ₹900',
+        'UPI transfer to Kabir ₹350 for coffee',
+        'Received via GPay ₹1500 bonus',
+        'GPay received from Ravi ₹2000'
+      ];
+      if (btn) btn.disabled = true;
+      if (status) status.textContent = 'Loading demo...';
+      for (const t of samples) {
+        try {
+          await fetch(`${API_BASE}/voice/add`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: t }) });
+          await new Promise(r => setTimeout(r, 250));
+        } catch (e) { console.warn('demo post failed', e); }
+      }
+      if (status) status.textContent = 'Demo loaded';
+      if (btn) btn.disabled = false;
+      // refresh
+      setTimeout(fetchOnline, 400);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('loadDemo');
+      if (btn) btn.addEventListener('click', createDemoData);
+    });
+    // wait for app.js to set API_BASE then load
+    document.addEventListener('DOMContentLoaded', async () => {
+      // app.js will have run pickApiBase on its DOMContentLoaded; give it a tick
+      setTimeout(fetchOnline, 200);
+    });
+    </script>
+    <script src="app.js"></script>
+  </main>
+</body>
+</html>

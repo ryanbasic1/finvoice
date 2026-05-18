@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Income - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="add-transaction.html">Transactions</a></li>
+        <li><a href="monthly-summary.html">Insights</a></li>
+        <li><a href="sip.html">Goals</a></li>
+        <li><a href="income.html" class="active">Income</a></li>
+        <li><a href="online.html">Advice</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#">Dark Mode</a>
+        <a href="#" id="sidebarLogout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">Add Income</div>
+    <div class="header-actions">
+      <div id="demoUserDisplay" class="user-pill"><span id="demoName">Demo</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <p><a href="dashboard.html">← Back to Dashboard</a></p>
+    <div class="section">
+      <div class="content-card">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+          <input id="incAmount" type="number" placeholder="Amount" />
+          <input id="incDate" type="date" />
+          <input id="incDesc" type="text" placeholder="Description" />
+        </div>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+          <button id="btnInc" class="primary-btn" onclick="addIncome()">Add Income</button>
+          <button class="secondary-btn" onclick="addIncomeForCurrentMonth()">Add for Current Month</button>
+          <button class="secondary-btn" onclick="addIncomeForNextMonth()">Add for Next Month</button>
+          <div id="incRes" style="margin-top:4px"></div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="app.js"></script>
+  </main>
+</body>
+</html>

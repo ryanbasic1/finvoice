@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monthly Summary - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="add-transaction.html">Transactions</a></li>
+        <li><a href="monthly-summary.html" class="active">Insights</a></li>
+        <li><a href="sip.html">Goals</a></li>
+        <li><a href="income.html">Income</a></li>
+        <li><a href="online.html">Advice</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#">Dark Mode</a>
+        <a href="#" id="sidebarLogout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">Monthly Summary</div>
+    <div class="header-actions">
+      <div id="demoUserDisplay" class="user-pill"><span id="demoName">Demo</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <p><a href="dashboard.html">← Back to Dashboard</a></p>
+    <div class="section">
+      <div class="content-card">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input type="month" id="summaryMonth" />
+          <label><input type="checkbox" id="summaryAllTime" /> All-time</label>
+          <button onclick="loadSummary()">Load Summary</button>
+          <button id="btnDownloadPdf">Download PDF</button>
+        </div>
+        <div id="summaryResult" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="content-card">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+          <h3 style="margin:0">Personal Advisory Dashboard</h3>
+        </div>
+        <div id="advisoryCards" style="margin-top:12px;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))"></div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+
+    <!-- Frontend-only enhancement: show Top 3 trending assets under the Positive savings line -->
+    <script>
+      (function(){
+        const API_KEY = "d2km581r01qs23a2sdd0d2km581r01qs23a2sddg";
+        const ASSETS = [
+          { symbol: "AAPL", label: "AAPL" },
+          { symbol: "TSLA", label: "TSLA" },
+          { symbol: "MSFT", label: "MSFT" },
+          { symbol: "AMZN", label: "AMZN" },
+          { symbol: "GOOGL", label: "GOOGL" },
+          // Crypto via BINANCE symbols for Finnhub; display as BTC-USD / ETH-USD
+          { symbol: "BINANCE:BTCUSDT", label: "BTC-USD" },
+          { symbol: "BINANCE:ETHUSDT", label: "ETH-USD" }
+        ];
+
+        async function fetchQuote(asset) {
+          try {
+            const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(asset.symbol)}&token=${API_KEY}`;
+            const res = await fetch(url, { cache: 'no-store' });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const q = await res.json();
+            const dp = typeof q.dp === 'number' ? q.dp : NaN; // daily percent change
+            return { label: asset.label, dp };
+          } catch (_) {
+            return { label: asset.label, dp: NaN };
+          }
+        }
+
+        async function loadTopAssets() {
+          const results = await Promise.all(ASSETS.map(fetchQuote));
+          return results
+            .filter(r => Number.isFinite(r.dp))
+            .sort((a, b) => b.dp - a.dp)
+            .slice(0, 3)
+            .map(r => r.label);
+        }
+
+        function findPositivesCard() {
+          const container = document.getElementById('advisoryCards');
+          if (!container) return null;
+          // Card structure: <div class="card"> <div>Positives</div> <ul>...</ul> </div>
+          const cards = Array.from(container.querySelectorAll('.card'));
+          return cards.find(card => /\bPositives\b/i.test(card.textContent || '')) || null;
+        }
+
+        async function enhance() {
+          const card = findPositivesCard();
+          if (!card) return;
+          // Avoid duplicates
+          if (card.querySelector('.sip-trending')) return;
+
+          const ul = card.querySelector('ul');
+          if (!ul) return;
+
+          const li = document.createElement('li');
+          li.className = 'sip-trending';
+          li.style.marginTop = '6px';
+          li.textContent = 'Fetching today\'s trends…';
+          ul.appendChild(li);
+
+          try {
+            const top3 = await loadTopAssets();
+            if (top3 && top3.length) {
+              li.textContent = `💡 Consider investing via SIP in: ${top3.join(', ')}`;
+            } else {
+              li.remove();
+            }
+          } catch (_) {
+            li.remove();
+          }
+        }
+
+        // Run once after advisory cards render; observe in case of re-render
+        document.addEventListener('DOMContentLoaded', () => {
+          const container = document.getElementById('advisoryCards');
+          if (!container) return;
+
+          // Try immediately
+          enhance();
+
+          const obs = new MutationObserver(() => enhance());
+          obs.observe(container, { childList: true, subtree: true });
+          // Stop observing after first successful injection
+          const stopObs = new MutationObserver(() => {
+            if (container.querySelector('.sip-trending')) { obs.disconnect(); stopObs.disconnect(); }
+          });
+          stopObs.observe(container, { childList: true, subtree: true });
+        });
+      })();
+    </script>
+  </main>
+</body>
+</html>

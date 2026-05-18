@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>News & Advisory - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .advisory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .advisory-card{background:var(--surface);border:1px solid rgba(16,24,40,0.06);border-radius:12px;padding:16px}
+    .advisory-badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .adv-buy{background:rgba(34,197,94,0.12);color:#166534}
+    .adv-hold{background:rgba(234,179,8,0.12);color:#92400e}
+    .adv-avoid{background:rgba(239,68,68,0.12);color:#7f1d1d}
+    .advisory-articles{margin-top:10px}
+    .advisory-articles li{margin:6px 0}
+    .advisory-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+    .muted{color:var(--muted)}
+  </style>
+  </head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="add-transaction.html">Transactions</a></li>
+        <li><a href="monthly-summary.html">Insights</a></li>
+        <li><a href="sip.html">Goals</a></li>
+        <li><a href="income.html">Income</a></li>
+        <li><a href="online.html">Advice</a></li>
+        <li><a class="active" href="news.html">News & Advisory</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#">Dark Mode</a>
+        <a href="#" id="sidebarLogout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">News & Advisory</div>
+    <div class="header-actions">
+      <div id="demoUserDisplay" class="user-pill"><span id="demoName">Demo</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <p><a href="dashboard.html">← Back to Dashboard</a></p>
+    <div class="section">
+      <div class="content-card">
+        <div class="advisory-controls">
+          <input id="advTerms" type="text" placeholder="Tickers/Company names (comma separated): AAPL, INFY, TCS" style="min-width:320px" />
+          <button id="advFetch" class="primary-btn">Fetch Advisory</button>
+          <span id="advStatus" class="muted"></span>
+        </div>
+        <div id="advSummary" class="muted" style="margin:6px 0 12px 0"></div>
+        <div id="advGrid" class="advisory-grid"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    function badge(dec){
+      const cls = dec==='buy' ? 'adv-buy' : (dec==='avoid' ? 'adv-avoid' : 'adv-hold');
+      const label = dec==='buy' ? 'Invest' : (dec==='avoid' ? 'Avoid' : 'Hold');
+      return `<span class="advisory-badge ${cls}">${label}</span>`;
+    }
+    function render(results){
+      const grid = document.getElementById('advGrid');
+      grid.innerHTML = results.map(r=>{
+        const articles = (r.articles||[]).slice(0,6).map(a=>`<li><a href="${a.link}" target="_blank" rel="noopener">${a.title}</a></li>`).join('') || '<li class="muted">No recent articles</li>';
+        const reasons = (r.reasons||[]).slice(0,4).map(s=>`<li class="muted">${s}</li>`).join('');
+        return `<div class="advisory-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3 style="margin:0">${r.term}</h3>
+            ${badge(r.decision)}
+          </div>
+          <div class="muted" style="margin-top:4px">Score: ${r.score} (pos ${r.pos} / neg ${r.neg})</div>
+          <div style="margin-top:10px"><strong>Reasons</strong><ul>${reasons || '<li class="muted">No strong signals detected</li>'}</ul></div>
+          <div class="advisory-articles"><strong>Recent headlines</strong><ul>${articles}</ul></div>
+        </div>`;
+      }).join('');
+    }
+    async function fetchAdvisory(){
+      const t = (document.getElementById('advTerms').value||'').trim();
+      if (!t) { alert('Enter 1 or more tickers or company names'); return; }
+      const status = document.getElementById('advStatus');
+      status.textContent = 'Fetching…';
+      try {
+        if (!API_BASE) { await pickApiBase(); }
+        const res = await fetch(`${API_BASE}/advisory/news?terms=${encodeURIComponent(t)}`);
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        document.getElementById('advSummary').textContent = `Updated: ${new Date(data.updatedAt).toLocaleString()}`;
+        render(data.results||[]);
+        status.textContent = '';
+      } catch (e) { status.textContent = 'Error: ' + e; }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('advFetch');
+      if (btn) btn.addEventListener('click', fetchAdvisory);
+    });
+  </script>
+</body>
+</html>

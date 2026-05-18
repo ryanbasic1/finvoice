@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html" class="active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Dashboard</span></a></li>
+        <li><a href="add-transaction.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span>Transactions</span></a></li>
+        <li><a href="monthly-summary.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg><span>Insights</span></a></li>
+        <li><a href="sip.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 12l-4-4-4 4M12 16V8"></path></svg><span>Goals</span></a></li>
+        <li><a href="income.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span>Income</span></a></li>
+        <li><a href="online.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg><span>Advice</span></a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#" class="theme-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><span>Dark Mode</span></a>
+        <a href="#" id="sidebarLogout"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Logout</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="header-title">
+      <h1>Dashboard</h1>
+    </div>
+    <div class="header-actions">
+    
+      <button id="voiceInputBtn" class="primary-btn">Voice Input</button>
+      <div id="demoUserDisplay" class="user-profile"><span id="userDisplay">Welcome back</span><div class="avatar">U</div></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 style="display:none">FinVoice Dashboard</h1>
+    <div class="breadcrumbs">
+      <a class="crumb" href="index.html">Home</a>
+      <span class="crumb-sep">›</span>
+      <a class="crumb" href="online.html">Online Payments</a>
+      <span class="crumb-sep">›</span>
+      <span id="dashUser" class="user-crumb"></span>
+    </div>
+
+  <div class="section">
+  <h2 style="margin-bottom:16px">Overview</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" data-variant="balance"></div>
+          <div class="stat-body">
+            <div class="stat-title">Current Balance</div>
+            <div class="stat-value" id="statBalance">₹0.00</div>
+            <div class="stat-delta" id="statBalanceDelta">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" data-variant="income"></div>
+          <div class="stat-body">
+            <div class="stat-title">Monthly Income</div>
+            <div class="stat-value" id="statIncome">₹0.00</div>
+            <div class="stat-delta up" id="statIncomeDelta">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" data-variant="expense"></div>
+          <div class="stat-body">
+            <div class="stat-title">Monthly Expenses</div>
+            <div class="stat-value" id="statExpenses">₹0.00</div>
+            <div class="stat-delta down" id="statExpensesDelta">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" data-variant="savings"></div>
+          <div class="stat-body">
+            <div class="stat-title">Savings Rate</div>
+            <div class="stat-value" id="statSavings">0%</div>
+            <div class="stat-delta up" id="statSavingsDelta">—</div>
+          </div>
+  </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Quick Expense Entry</h2>
+      <div class="content-card">
+        <div class="quick-entry">
+          <input id="expenseInput" type="text" placeholder="Enter expense (e.g. '₹500 for groceries')" />
+          <button class="primary-btn" onclick="addExpense()">Add</button>
+        </div>
+        <p class="help-text">Try: "1200 for dinner at restaurant yesterday" or "₹500 for groceries"</p>
+        <div id="botStatus" class="muted"></div>
+      </div>
+    </div>
+
+  <div class="section">
+      <h2>Main Actions</h2>
+
+      <!-- Loading state shown until transactions are populated -->
+      <div id="dashboardLoading" class="loading-center fade-in">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loading-text">Loading your dashboard...</div>
+      </div>
+
+      <!-- Actions (hidden while loading) -->
+      <div id="mainActions" class="action-bar hidden fade-in">
+        <a class="action-btn" href="add-transaction.html">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>
+          Add Transaction
+        </a>
+        <a class="action-btn" href="monthly-summary.html">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+          Monthly Summary
+        </a>
+        <a class="action-btn" href="sip.html">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 12l-4-4-4 4M12 16V8"></path></svg>
+          Goal Calculator
+        </a>
+        <a class="action-btn" href="income.html">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          Add Income
+        </a>
+        <a class="action-btn" href="online.html">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3z"></path><path d="M15 3v6h6"></path></svg>
+          Online Payments
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="grid two-cols">
+        <div class="content-card">
+          <div class="card-header">
+            <h3>Recent Transactions</h3>
+            <a href="add-transaction.html">View All</a>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Amount</th><th>Category</th><th></th></tr>
+            </thead>
+            <tbody id="transactionsTable"></tbody>
+          </table>
+        </div>
+        <div class="content-card">
+          <div class="card-header"><h3>Spending Breakdown</h3>
+            <div class="segmented">
+              <button data-scope="month" class="seg active">Month</button>
+              <button data-scope="quarter" class="seg">Quarter</button>
+              <button data-scope="year" class="seg">Year</button>
+            </div>
+          </div>
+          <ul id="dashboardBreakdown" class="breakdown-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="section">
+      <div class="content-card">
+        <h3>Monthly Health</h3>
+        <div id="monthlyWarning" class="muted"></div>
+      </div>
+    </div> -->
+
+    <script src="app.js"></script>
+    <script>
+      (function(){
+        try{
+          const u = JSON.parse(sessionStorage.getItem('demoUser')||'null');
+          const el = document.getElementById('dashUser');
+          if (u && u.name) {
+            el.innerHTML = `Signed in as <strong>${u.name}</strong> (<a href='#' id='logoutDash'>Logout</a>)`;
+            const out = document.getElementById('logoutDash');
+            if (out) out.addEventListener('click', ()=>{ sessionStorage.removeItem('demoUser'); location.href='index.html'; });
+          } else {
+            el.innerHTML = `<a href='login.html' class='primary-btn'>Sign in</a>`;
+          }
+        }catch(e){}
+      })();
+    </script>
+
+    <script>
+      // Toggle dashboard loading UI: prefer showing actions once data exists,
+      // but always reveal after a short fallback so the page isn't stuck.
+      (function(){
+        const loading = document.getElementById('dashboardLoading');
+        const actions = document.getElementById('mainActions');
+        const txTable = document.getElementById('transactionsTable');
+        let revealed = false;
+        function setLoaded() {
+          if (revealed) return; revealed = true;
+          if (loading) loading.classList.add('hidden');
+          if (actions) actions.classList.remove('hidden');
+        }
+        function checkOnce() {
+          try {
+            if (txTable && txTable.children && txTable.children.length > 0) return setLoaded();
+          } catch (_) {}
+        }
+        // Fallback: reveal after 1.2s even if there's no transactions table or no rows
+        setTimeout(setLoaded, 1200);
+        // Try an early check soon after DOM ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => setTimeout(checkOnce, 150));
+        } else {
+          setTimeout(checkOnce, 150);
+        }
+        // If a transactions table exists, watch for rows to reveal earlier
+        if (txTable && window.MutationObserver) {
+          const obs = new MutationObserver(() => { if (!revealed) { checkOnce(); if (txTable.children.length>0) { obs.disconnect(); setLoaded(); } } });
+          obs.observe(txTable, { childList: true, subtree: false });
+        }
+      })();
+    </script>
+
+    <script>
+      // Minimal dashboard data loader using existing API endpoints
+      (function(){
+        function fmtINR(n){
+          if(n==null||isNaN(n)) return '₹0.00';
+          return '₹' + Number(n).toFixed(2);
+        }
+        const now = new Date();
+        const month = now.toISOString().slice(0,7);
+    async function loadStats(){
+          try{
+            const url = `${API_BASE}/insights/summary?month=${month}`;
+            const res = await fetch(url);
+            if(!res.ok) throw new Error(await res.text());
+            const s = await res.json();
+            const incRaw = Number(s.income||0);
+            const exp = Number(s.expenses||0);
+      const remaining = (s && s.remaining != null) ? Number(s.remaining) : (incRaw - exp);
+      // Use actual backend income so dashboard reflects new income immediately
+      const displayInc = incRaw;
+      const displayBal = remaining;
+      const rate = displayInc > 0 ? ((displayInc - exp) / displayInc) * 100 : 0;
+      document.getElementById('statIncome').textContent = fmtINR(displayInc);
+            document.getElementById('statExpenses').textContent = fmtINR(exp);
+            document.getElementById('statBalance').textContent = fmtINR(displayBal);
+            document.getElementById('statSavings').textContent = `${rate.toFixed(0)}%`;
+            // simple breakdown list
+            const ul = document.getElementById('dashboardBreakdown');
+            if (ul && Array.isArray(s.byCategory)) {
+              ul.innerHTML = s.byCategory.slice(0,6).map(c=>`<li><span>${c.name}</span><strong>${fmtINR(c.amount)}</strong></li>`).join('') || '<li class="muted">No data</li>';
+            }
+          }catch(e){ console.warn('loadStats failed', e); }
+        }
+        // load transactions table using existing function
+        document.addEventListener('DOMContentLoaded', async () => {
+          try { await loadTransactions(); } catch(e) {}
+          // then load stats
+          setTimeout(loadStats, 200);
+        });
+      })();
+    </script>
+
+  </main>
+</body>
+</html>

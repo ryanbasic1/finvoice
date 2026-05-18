@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Transaction - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="add-transaction.html" class="active">Transactions</a></li>
+        <li><a href="monthly-summary.html">Insights</a></li>
+        <li><a href="sip.html">Goals</a></li>
+        <li><a href="income.html">Income</a></li>
+        <li><a href="online.html">Advice</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#">Dark Mode</a>
+        <a href="#" id="sidebarLogout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">Transactions</div>
+    <div class="header-actions">
+      <div id="demoUserDisplay" class="user-pill"><span id="demoName">Demo</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 style="display:none">Add Transaction</h1>
+    <p><a href="dashboard.html">← Back to Dashboard</a></p>
+    <div class="section">
+      <div class="content-card">
+        <input id="expenseInput" type="text" placeholder="eg. Dinner ₹300 at Local" size="60" />
+        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+          <button class="primary-btn" onclick="addExpense()">Add</button>
+          <button class="voice-btn" onclick="startVoice()">🎤 Voice</button>
+          <button class="primary-btn" id="botToggle">🤖 Bot</button>
+        </div>
+        <div id="botStatus" style="margin-top:10px;color:#3949ab;font-weight:600;"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="content-card">
+        <h3>Search & Filters</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input id="filterSearch" type="search" placeholder="Search all (description, merchant, category)" style="flex:1;min-width:220px" />
+          <input id="filterMonth" type="month" />
+          <select id="filterCategory"><option value="">All Categories</option></select>
+          <select id="filterSort">
+            <option value="date_desc">Date ↓</option>
+            <option value="date_asc">Date ↑</option>
+            <option value="amount_desc">Amount ↓</option>
+            <option value="amount_asc">Amount ↑</option>
+          </select>
+          <input id="filterMin" type="number" placeholder="Min amt" style="width:90px" />
+          <input id="filterMax" type="number" placeholder="Max amt" style="width:90px" />
+          <button id="btnApplyFilters" class="primary-btn">Apply</button>
+          <button id="btnResetFilters">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="content-card">
+        <h3>Transactions</h3>
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Description</th><th>Amount</th><th>Category</th><th></th></tr>
+          </thead>
+          <tbody id="transactionsTable"></tbody>
+        </table>
+        <div style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap">
+          <button id="btnLoadMore" class="primary-btn">Load more</button>
+          <button id="btnDownloadPdf">Download PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </main>
+</body>
+</html>

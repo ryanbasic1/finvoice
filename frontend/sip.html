@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIP Calculator - FinVoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="appSidebar" aria-label="Main navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">FinVoice</div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="add-transaction.html">Transactions</a></li>
+        <li><a href="monthly-summary.html">Insights</a></li>
+        <li><a href="sip.html" class="active">Goals</a></li>
+        <li><a href="income.html">Income</a></li>
+        <li><a href="online.html">Advice</a></li>
+      </ul>
+      <div class="sidebar-bottom">
+        <a href="#">Dark Mode</a>
+        <a href="#" id="sidebarLogout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header">
+    <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+    <div class="page-title">SIP Calculator</div>
+    <div class="header-actions">
+      <div id="demoUserDisplay" class="user-pill"><span id="demoName">Demo</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <p><a href="dashboard.html">← Back to Dashboard</a></p>
+    <div class="section">
+      <input id="sipTarget" type="number" placeholder="Target amount" />
+      <input id="sipMonths" type="number" placeholder="Months" />
+      <button class="primary-btn" onclick="calculateSIP()">Calculate</button>
+      <div id="sipResult" style="margin-top:8px"></div>
+    </div>
+    </div>
+    <script src="app.js"></script>
+  </main>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinVoice Web</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+  <!-- Visual Sidebar (matches design) -->
+  <nav id="appSidebar" aria-label="Main navigation">
+      <div class="sidebar-inner">
+        <div class="sidebar-brand">FinVoice</div>
+        <ul class="sidebar-nav">
+          <li>
+            <a href="dashboard.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="add-transaction.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              Transactions
+            </a>
+          </li>
+          <li>
+            <a href="monthly-summary.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+              </svg>
+              Insights
+            </a>
+          </li>
+          <li>
+            <a href="sip.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M16 12l-4-4-4 4"></path>
+                <path d="M12 16V8"></path>
+              </svg>
+              Goals
+            </a>
+          </li>
+          <li>
+            <a href="income.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              Income
+            </a>
+          </li>
+          <li>
+            <a href="online.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              Advice
+            </a>
+          </li>
+            <li>
+              <a href="news.html">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"></path>
+                  <path d="M20 22V8"></path>
+                  <path d="M20 8L6.5 2A2.5 2.5 0 0 0 4 4.5V19.5"></path>
+                  <path d="M8 10h.01"></path>
+                  <path d="M12 10h.01"></path>
+                  <path d="M16 10h.01"></path>
+                </svg>
+                News & Advisory
+              </a>
+            </li>
+        </ul>
+        <div class="sidebar-bottom">
+          <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Dark Mode
+          </a>
+          <a href="#" id="sidebarLogout">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Static Home / About page (no data loading) -->
+    <div class="container">
+      <header class="header">
+        <button class="mobile-toggle" id="mobileMenu" aria-label="Open menu">☰</button>
+        <div class="brand">
+          <div class="logo">FV</div>
+          <div>
+            <div class="title">Welcome to FinVoice</div>
+            <div class="lead">Track expenses by voice (Hinglish friendly), get insights, and plan SIP goals.</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a class="primary-btn" href="dashboard.html">Open Dashboard</a>
+          <a class="crumb" href="login.html">Login</a>
+        </div>
+      </header>
+
+      <main class="content-area">
+        <div class="section">
+          <div class="content-card">
+            <h2>What is FinVoice?</h2>
+            <p>FinVoice lets you add expenses using natural speech like “₹500 for groceries yesterday”, auto-categorizes them, and shows monthly insights. It also supports Hinglish, continuous voice mode (Bot), and PDF summaries.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+            <div class="card"><h3>Voice Expenses</h3><p>Single-tap voice input and a continuous “Bot” to capture multiple expenses hands‑free.</p></div>
+            <div class="card"><h3>Hinglish Parsing</h3><p>Understands common Hinglish patterns like “do hazaar rent” or “Rs 200 chai”.</p></div>
+            <div class="card"><h3>Insights & PDF</h3><p>Monthly summary, category breakdown, and one‑click PDF export.</p></div>
+            <div class="card"><h3>Goals / SIP</h3><p>Calculate monthly SIP needed to reach your financial goals.</p></div>
+            <div class="card"><h3>Online Payments</h3><p>Quick view of UPI wallets like GPay, PhonePe, Paytm.</p></div>
+            <div class="card"><h3>Advisory</h3><p>Headlines & signals with “Invest / Hold / Avoid” guidance (demo, rules‑based).</p></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="content-card">
+            <h2>How to get started</h2>
+            <ol style="padding-left: 18px; margin-top: 8px;">
+              <li>Login to the demo account.</li>
+              <li>Go to Dashboard and click “Voice Input” or type an expense.</li>
+              <li>Open “Insights” for monthly summary, or “Goal Calculator” for SIP.</li>
+            </ol>
+            <div style="margin-top:12px"><a class="primary-btn" href="login.html">Login</a> <a class="crumb" href="dashboard.html" style="margin-left:8px">Skip to Dashboard</a></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="content-card">
+            <h2>Privacy</h2>
+            <p>This demo runs locally. Voice is processed by your browser; transactions are stored in a local SQLite database via the demo backend.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <script>
+      // Minimal dark mode + logout wiring for Home (no app.js here)
+      document.addEventListener('DOMContentLoaded', () => {
+        // restore dark mode
+        try { if (localStorage.getItem('darkMode') === '1') document.documentElement.classList.add('dark-mode'); } catch {}
+        // toggle
+        document.querySelectorAll('#appSidebar a').forEach(a => {
+          if (a && /dark mode/i.test(a.textContent||'')) {
+            a.addEventListener('click', (ev) => {
+              ev.preventDefault();
+              const isDark = document.documentElement.classList.toggle('dark-mode');
+              try { localStorage.setItem('darkMode', isDark ? '1' : '0'); } catch {}
+            });
+          }
+        });
+        // mobile drawer toggle
+        const menuBtn = document.getElementById('mobileMenu');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        const toggle = (on) => {
+          document.body.classList.toggle('sidebar-open', on !== undefined ? on : !document.body.classList.contains('sidebar-open'));
+        };
+        if (menuBtn) menuBtn.addEventListener('click', () => toggle());
+        if (backdrop) backdrop.addEventListener('click', () => toggle(false));
+
+        // logout
+        const out = document.getElementById('sidebarLogout');
+        if (out) out.addEventListener('click', (ev) => { ev.preventDefault(); try{ sessionStorage.removeItem('demoUser'); }catch{} window.location.href='login.html'; });
+      });
+    </script>
+  </body>
+</html>
